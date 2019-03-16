@@ -4,8 +4,11 @@
 package twitter;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Extract consists of methods that extract information from a list of tweets.
@@ -48,7 +51,15 @@ public class Extract {
      *         include a username at most once.
      */
     public static Set<String> getMentionedUsers(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+    	  String tweetString = tweets.get(0).getText();
+    	  Pattern checkPattern= Pattern.compile("@\\w+");
+    			  Matcher matcherUser = checkPattern.matcher(tweetString) ;
+    			  Set<String> mentionedUser = new HashSet<String>() ;
+    			  while(matcherUser.find()) {
+    				  mentionedUser.add(matcherUser.group());
+    			  }
+    	  return mentionedUser;
+    	    //pattern and matcher syntax are taken from stack overflow.
     }
 
 }
