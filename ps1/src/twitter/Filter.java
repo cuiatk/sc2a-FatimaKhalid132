@@ -4,6 +4,7 @@
 package twitter;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -48,23 +49,18 @@ public class Filter {
      *         in the same order as in the input list.
      */
     public static List<Tweet> inTimespan(List<Tweet> tweets, Timespan timespan) {
-    	  assert tweets != null;
-          assert timespan != null;
-          
-          Predicate<Tweet> withinTimespan = tweet -> {
-              Instant timestamp = tweet.getTimestamp();
-              Instant start = timespan.getStart();
-              Instant end = timespan.getEnd();
-              
-              return (timestamp.isAfter(start) && timestamp.isBefore(end))
-                     || timestamp.equals(start) 
-                     || timestamp.equals(end); 
-          };
-          
-          return tweets.stream()
-                  .filter(withinTimespan)
-                  .collect(Collectors.toList());
-      }
+List<Tweet> filteredTweets = new ArrayList<Tweet>();
+    	
+    	for(int i=0; i<tweets.size(); i++){
+    		
+    		if(tweets.get(i).getTimestamp().isAfter(timespan.getStart())){
+    			if(tweets.get(i).getTimestamp().isBefore(timespan.getEnd())){
+    				filteredTweets.add(tweets.get(i));
+    			}
+    		}
+    	}
+    	return filteredTweets;
+    }
 
       
     
@@ -85,25 +81,25 @@ public class Filter {
      *         same order as in the input list.
      */
     public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
-    	Set<String> distinctWords = words.stream()
-                .map(String::toLowerCase)
-                .distinct()
-                .collect(Collectors.toSet());
-        
-        Predicate<Tweet> containsWord = tweet -> {
-            String text = tweet.getText().toLowerCase();
-            for (String word: distinctWords) {
-                if (text.contains(word)) {
-                    return true;
-                }
-            }
-            return false;
-        };
-        
-        return tweets.stream()
-                .filter(containsWord)
-                .collect(Collectors.toList());
-    
+List<Tweet> filteredTweets = new ArrayList<Tweet>();
+    	
+    	for(int i=0; i<tweets.size(); i++){
+    		
+    		String text = tweets.get(i).getText();
+    		String[] values = text.split(" ");
+    		
+    		for(int j=0; j<values.length; j++){
+    			
+    			for(int k=0; k<words.size(); k++){
+    				
+    				if(values[j].equalsIgnoreCase(words.get(k))){
+    					filteredTweets.add(tweets.get(i));
+    					break;
+    				}
+    				break;	
+    			}
+    		}
+    	}
+    	return filteredTweets;
     }
-
 }

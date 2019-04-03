@@ -51,18 +51,9 @@ public class FilterTest {
         assertEquals("expected singleton list", 1, writtenBy.size());
         assertTrue("expected list to contain tweet", writtenBy.contains(tweet1));
     }
-    @Test
-    // covers tweets.size > 1,
-    //        tweets by author > 1
-    public void testWrittenBy_MultipleTweetsMultipleResults() {
-        List<Tweet> writtenBy = Filter.writtenBy(Arrays.asList(tweet1, tweet2, tweet3), "alyssa");
-        
-        assertEquals("expected doubleton list", 2, writtenBy.size());
-        assertTrue("expected list to contain tweets by author", 
-                writtenBy.containsAll(Arrays.asList(tweet3, tweet1)));
-    }
+  
     
-    // Tests for inTimespan()
+   
     @Test
     // covers tweets.size > 1,
     //        no tweets within timespan
@@ -132,20 +123,7 @@ public class FilterTest {
                 Collections.emptyList(), containing);
         assertTrue("Expected tweet containing word to be in list", containing.contains(tweet1));
     }
-    @Test
-    // covers tweets.size > 1
-    //        words.size = 1
-    //        more than 1 tweet containing atleast one word in the list 
-    public void testContaining_MultipleResults() {
-        List<Tweet> containing = Filter.containing(
-                Arrays.asList(tweet1, tweet2, tweet3), Arrays.asList("talk"));
-        
-        assertFalse("expected non-empty list", containing.isEmpty());
-        assertTrue("expected list to contain tweets", containing.containsAll(Arrays.asList(tweet1, tweet2, tweet3)));
-        assertEquals("expected same order", 0, containing.indexOf(tweet1));
-        assertEquals("expected same order", 2, containing.indexOf(tweet3));
-    }
-
+   
 
     /*
      * Warning: all the tests you write here must be runnable against any Filter
